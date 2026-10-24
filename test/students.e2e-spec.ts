@@ -4,20 +4,36 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 
+
+//  
 describe('Students CRUD (e2e)', () => {
   let app: INestApplication;
 
+  //  create objet for testing mockup 
   const mockStudents = [
     {
       id: 1,
-      name: 'John Doe',
-      email: 'john@example.com',
-      age: 22,
+      name: 'Tola San',
+      email: 'tolasan@gmail.com',
+      age: 23,
+      image_url: "https://static.vecteezy.com/system/resources/thumbnails/024/295/121/small/school-boy-with-books-illustration-ai-generative-free-photo.jpg",
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+
+    {
+      id:2,
+      name:'Ryan Yuma',
+      email:'Ryanyuma12@gmail.com',
+      age:23,
+      image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5u9fQk4H0nIGEwogeuFx8lf9Y2EzK43fXOMPSMxhU9cOf9eiv3G-e3Kmo&s=10",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+     
   ];
 
+  //  servie object 
   const mockPrismaService = {
     $connect: jest.fn(),
     $disconnect: jest.fn(),
@@ -69,15 +85,15 @@ describe('Students CRUD (e2e)', () => {
     return request(app.getHttpServer())
       .post('/students')
       .send({
-        name: 'Jane Smith',
-        email: 'jane@example.com',
+        name: 'Heng sok',
+        email: 'hengsok@gmail.com',
         age: 21,
       })
       .expect(201)
       .expect((res) => {
         expect(res.body.id).toEqual(2);
-        expect(res.body.name).toEqual('Jane Smith');
-        expect(res.body.email).toEqual('jane@example.com');
+        expect(res.body.name).toEqual('Heng sok');
+        expect(res.body.email).toEqual('hengsok@gmail.com');
       });
   });
 
@@ -91,14 +107,15 @@ describe('Students CRUD (e2e)', () => {
       .expect(400);
   });
 
-  it('GET /students — should list all students', () => {
+  it('GET /students — exspected get all students', () => {
+
     return request(app.getHttpServer())
       .get('/students')
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
         expect(res.body.length).toBeGreaterThan(0);
-        expect(res.body[0].email).toEqual('john@example.com');
+        expect(res.body[0].email).toEqual('tolasan@gmail.com');
       });
   });
 
@@ -108,7 +125,7 @@ describe('Students CRUD (e2e)', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.id).toEqual(1);
-        expect(res.body.name).toEqual('John Doe');
+        expect(res.body.name).toEqual('Tola San');
       });
   });
 
@@ -122,11 +139,14 @@ describe('Students CRUD (e2e)', () => {
     return request(app.getHttpServer())
       .patch('/students/1')
       .send({
-        name: 'John Updated',
+        name: 'Bondit',
+        email: 'bondit@email.com'
       })
       .expect(200)
       .expect((res) => {
-        expect(res.body.name).toEqual('John Updated');
+        expect(res.body.name).toEqual('Bondit');
+        expect(res.body.email).toEqual('bondit@email.com');
+        
       });
   });
 

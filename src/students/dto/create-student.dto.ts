@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
+import { IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateStudentDto {
   @IsString()
@@ -12,4 +12,8 @@ export class CreateStudentDto {
   @IsInt()
   @Min(1)
   age: number;
+
+  @IsString()
+  @IsOptional()
+  image_url?: string;
 }

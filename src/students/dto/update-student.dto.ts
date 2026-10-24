@@ -13,4 +13,8 @@ export class UpdateStudentDto {
   @IsInt()
   @Min(1)
   age?: number;
+
+  @IsOptional()
+  @IsString()
+  image_url?: string;
 }

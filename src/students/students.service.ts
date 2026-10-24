@@ -2,16 +2,26 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  Logger
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateStudentDto, UpdateStudentDto } from './dto';
+import { console } from 'inspector';
+
 
 @Injectable()
 export class StudentsService {
-  constructor(private readonly prisma: PrismaService) {}
+
+  // create logger object 
+  private readonly logger = new Logger(StudentsService.name)
+
+  // dependency injection of prisma service
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(createStudentDto: CreateStudentDto) {
+
+
     try {
       return await this.prisma.student.create({
         data: createStudentDto,
@@ -29,13 +39,25 @@ export class StudentsService {
     }
   }
 
+
+  // -----------------------------------------------------------------------------------------
+  // handling http method get all students 
+  // -----------------------------------------------------------------------------------------
   async findAll() {
-    return this.prisma.student.findMany({
+    const students = await this.prisma.student.findMany({
+      // sorting  from as to ds 
       orderBy: { id: 'asc' },
     });
+
+    //  logging all the students 
+    this.logger.log("The all students :", students);
+
+    return students;
   }
 
   async findOne(id: number) {
+    this.logger.log(`Student log: ${JSON.stringify(id)}`);
+
     const student = await this.prisma.student.findUnique({
       where: { id },
     });

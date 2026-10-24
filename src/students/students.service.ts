@@ -7,7 +7,6 @@ import {
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateStudentDto, UpdateStudentDto } from './dto';
-import { console } from 'inspector';
 
 
 @Injectable()
